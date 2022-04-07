@@ -54,6 +54,12 @@ public class BatchTest {
         order.put(puts);
     }
 
+    @Test
+    public void delete() throws IOException {
+        TableName order = TableName.valueOf(Bytes.toBytes("ORDER_INFO"));
+        hbaseFactory.getAdmin().disableTable(order);
+        hbaseFactory.getAdmin().deleteTable(order);
+    }
     /**
      * 批量获取数据
      *
@@ -69,9 +75,10 @@ public class BatchTest {
         }
         Result[] results = order.get(gets);
         for (Result result : results) {
+            String row = Bytes.toString(result.getRow());
+            System.out.println("row = " + row);
             Cell[] cells = result.rawCells();
             for (Cell cell : cells) {
-                String row = Bytes.toString(CellUtil.cloneRow(cell));
                 String family = Bytes.toString(CellUtil.cloneFamily(cell));
                 String qualifier = Bytes.toString(CellUtil.cloneQualifier(cell));
                 String value = Bytes.toString(CellUtil.cloneValue(cell));
@@ -107,14 +114,19 @@ public class BatchTest {
         Table order = hbaseFactory.getConnection().getTable(TableName.valueOf("ORDER_INFO"));
         Scan scan = new Scan();
         scan.setCaching(10);
-        scan.withStartRow(Bytes.toBytes("15"));
-        scan.withStopRow(Bytes.toBytes("359"));
+        scan.withStartRow(Bytes.toBytes("000015"));
+        scan.withStopRow(Bytes.toBytes("000359"));
         ResultScanner scanner = order.getScanner(scan);
         for (Result result : scanner) {
-            for (Cell cell : result.listCells()) {
-                String row = Bytes.toString(CellUtil.cloneRow(cell));
+            String row = Bytes.toString(result.getRow());
+            System.out.println("row = " + row);
+            Cell[] cells = result.rawCells();
+            for (Cell cell : cells) {
+                String family = Bytes.toString(CellUtil.cloneFamily(cell));
+                String qualifier = Bytes.toString(CellUtil.cloneQualifier(cell));
                 String value = Bytes.toString(CellUtil.cloneValue(cell));
-                System.out.println("row:" + row + "    value:" + value);
+                System.out.println("row = " + row);
+                System.out.println(family + ":" + qualifier + "\t" + value);
             }
         }
     }
@@ -137,11 +149,15 @@ public class BatchTest {
         scan.setFilter(filterList);
         ResultScanner scanner = order.getScanner(scan);
         for (Result result:scanner){
-            for (Cell cell:result.listCells()){
-                String row = Bytes.toString(CellUtil.cloneRow(cell));
+            String row = Bytes.toString(result.getRow());
+            System.out.println("row = " + row);
+            Cell[] cells = result.rawCells();
+            for (Cell cell : cells) {
+                String family = Bytes.toString(CellUtil.cloneFamily(cell));
                 String qualifier = Bytes.toString(CellUtil.cloneQualifier(cell));
                 String value = Bytes.toString(CellUtil.cloneValue(cell));
-                System.out.println("row:" + row +"  qualifier:"+qualifier+ "    value:" + value);
+                System.out.println("row = " + row);
+                System.out.println(family + ":" + qualifier + "\t" + value);
             }
         }
     }
