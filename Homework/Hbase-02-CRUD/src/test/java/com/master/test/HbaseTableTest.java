@@ -10,6 +10,10 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+
+/**
+ *
+ */
 public class HbaseTableTest {
     private final HbaseFactory hbaseFactory=new HbaseFactory();
 
