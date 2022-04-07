@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Hbase-02-CRUD/Hbase-02-CRUD.iml" filepath="$PROJECT_DIR$/Hbase-02-CRUD/Hbase-02-CRUD.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Hbase-03-BatchProcessing/Hbase-03-BatchProcessing.iml" filepath="$PROJECT_DIR$/Hbase-03-BatchProcessing/Hbase-03-BatchProcessing.iml" />
+    </modules>
+  </component>
+</project>
