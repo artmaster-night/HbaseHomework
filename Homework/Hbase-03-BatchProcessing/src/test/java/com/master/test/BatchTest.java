@@ -94,9 +94,34 @@ public class BatchTest {
     }
 
 
+    /**
+     * 缓存器扫描
+     */
+    @Test
+    public void scanner() throws IOException {
+        Table order = hbaseFactory.getConnection().getTable(TableName.valueOf("ORDER_INFO"));
+        Scan scan = new Scan();
+        scan.setCaching(10);
+        scan.withStartRow(Bytes.toBytes("15"));
+        scan.withStopRow(Bytes.toBytes("359"));
+        ResultScanner scanner = order.getScanner(scan);
+        for (Result result:scanner){
+            for (Cell cell: result.listCells()){
+                String row = Bytes.toString(CellUtil.cloneRow(cell));
+                String value = Bytes.toString(CellUtil.cloneValue(cell));
+                System.out.println("row:" + row + "    value:" + value);
+            }
+        }
+    }
 
-
-
+    @Test
+    public void filterScanner() {
+        
+    }
+    
+    
+    
+    
 
     private String[][] getData() {
         return new String[][]{
