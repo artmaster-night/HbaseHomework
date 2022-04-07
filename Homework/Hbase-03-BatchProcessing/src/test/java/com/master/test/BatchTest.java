@@ -78,6 +78,25 @@ public class BatchTest {
     }
 
 
+    /**
+     * 批量删除数据
+     * @throws IOException 异常
+     */
+    @Test
+    public void patchDelete() throws IOException {
+        Table order = hbaseFactory.getConnection().getTable(TableName.valueOf("ORDER_INFO"));
+        List<Delete> deletes=new ArrayList<Delete>();
+        for (int i=0;i<6;i++){
+            Delete delete = new Delete(Bytes.toBytes(data[8 + i][0]));
+            deletes.add(delete);
+        }
+        order.delete(deletes);
+    }
+
+
+
+
+
 
     private String[][] getData() {
         return new String[][]{
